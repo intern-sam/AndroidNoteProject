@@ -68,7 +68,7 @@ public class MainActivity extends FragmentActivity implements
 			// noteContentFragment = new NoteContentFragment();
 			// NoteContentFragment newContentFragment = new NoteContentFragment();
 			Bundle args = new Bundle();
-			args.putInt(NoteContentFragment.getArgPosition(), position);
+			args.putInt(NoteContentFragment.ARG_POSITION, position);
 			noteContentFragment.setArguments(args);
 			FragmentTransaction transaction = getSupportFragmentManager()
 					.beginTransaction();
