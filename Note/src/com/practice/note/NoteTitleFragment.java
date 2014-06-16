@@ -60,9 +60,10 @@ public class NoteTitleFragment extends ListFragment {
 		getListView().setItemChecked(position, true);
 	}
 
-	// public void onClick(View view) {
-	// @SuppressWarnings("unchecked")
-	// ArrayAdapter<Note> adapter = (ArrayAdapter<Note>) getListAdapter();
-	// }
+	public void onClick(View view) {
+		@SuppressWarnings("unchecked")
+		ArrayAdapter<Note> adapter = (ArrayAdapter<Note>) getListAdapter();
+		System.out.println("called");
+	}
 
 }

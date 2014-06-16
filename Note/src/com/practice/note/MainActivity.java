@@ -126,7 +126,7 @@ public class MainActivity extends FragmentActivity implements
 		Intent intent = new Intent(this, NewNoteActivity.class);
 		if (item.getTitle().equals("Add New Note")) {
 			if (isPhone) {
-				startActivity(intent);
+				startActivityForResult(intent, 1);
 			} else {
 				noteContentFragment.clear();
 			}
@@ -150,6 +150,11 @@ public class MainActivity extends FragmentActivity implements
 					false);
 			return rootView;
 		}
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
 	}
 
 }
