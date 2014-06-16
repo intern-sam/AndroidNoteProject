@@ -1,5 +1,7 @@
 package com.practice.note;
 
+import java.util.List;
+
 import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,6 +12,7 @@ import android.widget.ListView;
 
 public class NoteTitleFragment extends ListFragment {
 	OnListItemSelectedListener mCallback;
+	private NotesDataSource dataSource;
 
 	public interface OnListItemSelectedListener {
 		public void onListItemSelected(int position);
@@ -20,9 +23,16 @@ public class NoteTitleFragment extends ListFragment {
 		super.onCreate(savedInstanceState);
 		int layout = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ? android.R.layout.simple_list_item_activated_1
 				: android.R.layout.simple_list_item_1;
-		String tempItems[] = { "one", "two" };
-		setListAdapter(new ArrayAdapter<String>(getActivity(), layout,
-				tempItems));
+		dataSource = new NotesDataSource(getActivity());
+		// if (dataSource != null) {
+		dataSource.open();
+		List<String> values = dataSource.getAllTitles();
+
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+				layout, values);
+		// String tempItems[] = { "one", "two" };
+		setListAdapter(adapter);
+		// }
 	}
 
 	@Override
@@ -49,5 +59,10 @@ public class NoteTitleFragment extends ListFragment {
 		mCallback.onListItemSelected(position);
 		getListView().setItemChecked(position, true);
 	}
+
+	// public void onClick(View view) {
+	// @SuppressWarnings("unchecked")
+	// ArrayAdapter<Note> adapter = (ArrayAdapter<Note>) getListAdapter();
+	// }
 
 }
