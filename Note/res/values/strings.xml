@@ -9,5 +9,6 @@
     <string name="edit_title">Title</string>
     <string name="edit_content">Note</string>
     <string name="done_btn">Done</string>
+    <string name="delete_btn">Delete</string>
 
 </resources>
