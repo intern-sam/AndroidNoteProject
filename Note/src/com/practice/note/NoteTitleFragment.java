@@ -3,6 +3,7 @@ package com.practice.note;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -60,10 +61,13 @@ public class NoteTitleFragment extends ListFragment {
 		getListView().setItemChecked(position, true);
 	}
 
-	public void onClick(View view) {
+	public void onClick(Intent intent) {
 		@SuppressWarnings("unchecked")
 		ArrayAdapter<Note> adapter = (ArrayAdapter<Note>) getListAdapter();
-		System.out.println("called");
+		if(intent.getStringExtra("done").equals("done")){
+			System.out.println("called");
+		}
+		
 	}
 
 }
