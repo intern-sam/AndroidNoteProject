@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,7 +15,7 @@ import android.view.ViewGroup;
 
 public class MainActivity extends FragmentActivity implements
 		NoteTitleFragment.OnListItemSelectedListener {
-
+	public static final String TAG = MainActivity.class.getName();
 	private NoteContentFragment noteContentFragment;
 
 	private boolean isPhone;
@@ -126,6 +127,7 @@ public class MainActivity extends FragmentActivity implements
 		Intent intent = new Intent(this, NewNoteActivity.class);
 		if (item.getTitle().equals("Add New Note")) {
 			if (isPhone) {
+				Log.d(TAG, "is phone, start clicked");
 				startActivityForResult(intent, 1);
 			} else {
 				noteContentFragment.clear();
@@ -154,7 +156,30 @@ public class MainActivity extends FragmentActivity implements
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		Log.d(TAG, "Returned to main");
+		NoteTitleFragment noteTitleFragment = new NoteTitleFragment();
+		Intent intent = new Intent();
+		isPhone = findViewById(R.id.note_frag) == null;
 
+		if (isPhone) {
+
+			noteTitleFragment.setArguments(getIntent().getExtras());
+
+			getSupportFragmentManager().beginTransaction()
+					.add(R.id.container, noteTitleFragment).commit();
+		}
+		if (requestCode == 1) {
+			noteTitleFragment.onClick(data);
+			noteTitleFragment.setArguments(getIntent().getExtras());
+
+			getSupportFragmentManager().beginTransaction()
+					.add(R.id.container, noteTitleFragment).commit();
+			// if(resultCode == RESULT_OK){
+			// String title = data.getStringExtra("title");
+			// String content = data.getStringExtra("content");
+			// noteTitleFragment.onClick(intent);
+			// }
+		}
 	}
 
 }
