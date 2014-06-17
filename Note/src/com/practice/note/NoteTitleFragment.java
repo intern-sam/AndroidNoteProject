@@ -67,7 +67,9 @@ public class NoteTitleFragment extends ListFragment {
 		if (intent.getStringExtra("done").equals("done")) {
 			System.out.println("called");
 		}
-
+		if (intent.getStringExtra("done").equals("done")) {
+			System.out.println("called");
+		}
 	}
 
 }

@@ -15,12 +15,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 public class NewNoteActivity extends FragmentActivity {
-
 	private static final String TAG = NewNoteActivity.class.getName();
 	Button doneBtn;
-
-	// public final static String EXTRA_MESSAGE = "com.practice.note.NewNoteActivity";
-	// public final static String EXTRA_MESSAGE2 = "com.practice.note.NewNoteActivity";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +92,6 @@ public class NewNoteActivity extends FragmentActivity {
 			return rootView;
 		}
 	}
-
 	// public void onClick(View view) {
 	// //@SuppressWarnings("unchecked")
 	// Log.d(TAG, "Made it to click");
