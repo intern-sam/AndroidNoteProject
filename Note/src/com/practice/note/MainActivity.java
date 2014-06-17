@@ -180,26 +180,6 @@ public class MainActivity extends FragmentActivity implements
 			// noteTitleFragment.onClick(intent);
 			// }
 		}
-
-		if (isPhone) {
-
-			noteTitleFragment.setArguments(getIntent().getExtras());
-
-			getSupportFragmentManager().beginTransaction()
-					.add(R.id.container, noteTitleFragment).commit();
-		}
-		if (requestCode == 1) {
-			noteTitleFragment.onClick(data);
-			noteTitleFragment.setArguments(getIntent().getExtras());
-
-			getSupportFragmentManager().beginTransaction()
-					.add(R.id.container, noteTitleFragment).commit();
-			// if(resultCode == RESULT_OK){
-			// String title = data.getStringExtra("title");
-			// String content = data.getStringExtra("content");
-			// noteTitleFragment.onClick(intent);
-			// }
-		}
 	}
 
 }
