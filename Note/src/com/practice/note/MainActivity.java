@@ -173,6 +173,7 @@ public class MainActivity extends FragmentActivity implements
 			Log.d(TAG, "requestCode = 1, calling on click");
 			noteTitleFragment.onClick(data);
 			Log.d(TAG, "back to main from on click");
+			setContentView(R.layout.activity_main);
 			noteTitleFragment.setArguments(getIntent().getExtras());
 
 			getSupportFragmentManager().beginTransaction()
