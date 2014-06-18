@@ -8,6 +8,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class NotesDataSource {
 	private SQLiteDatabase database;
@@ -16,22 +17,29 @@ public class NotesDataSource {
 			MySQLiteHelper.COLUMN_TITLE, MySQLiteHelper.COLUMN_CONTENT };
 	private String[] allTitles = { MySQLiteHelper.COLUMN_TITLE };
 
+	public static final String TAG = NotesDataSource.class.getName();
+
 	public NotesDataSource(Context context) {
 		dbHelper = new MySQLiteHelper(context);
 	}
 
 	public void open() throws SQLException {
+		Log.d(TAG, "DB open");
 		database = dbHelper.getWritableDatabase();
 	}
 
 	public void close() {
+		Log.d(TAG, "DB closed");
 		dbHelper.close();
 	}
 
 	public Note createNote(String title, String content) {
+		Log.d(TAG, "in create note");
 		ContentValues values = new ContentValues();
 		values.put(MySQLiteHelper.COLUMN_TITLE, title);
+		Log.d(TAG, "Put title");
 		values.put(MySQLiteHelper.COLUMN_CONTENT, content);
+		Log.d(TAG, "put content");
 		long insertId = database.insert(MySQLiteHelper.TABLE_NOTES, null,
 				values);
 		Cursor cursor = database.query(MySQLiteHelper.TABLE_NOTES, allColumns,

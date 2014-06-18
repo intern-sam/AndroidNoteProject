@@ -159,17 +159,20 @@ public class MainActivity extends FragmentActivity implements
 		Log.d(TAG, "Returned to main");
 		NoteTitleFragment noteTitleFragment = new NoteTitleFragment();
 		Intent intent = new Intent();
+		Log.d(TAG, "Note title and intent initialized");
 		isPhone = findViewById(R.id.note_frag) == null;
-
-		if (isPhone) {
-
-			noteTitleFragment.setArguments(getIntent().getExtras());
-
-			getSupportFragmentManager().beginTransaction()
-					.add(R.id.container, noteTitleFragment).commit();
-		}
+		//
+		// if (isPhone) {
+		//
+		// noteTitleFragment.setArguments(getIntent().getExtras());
+		//
+		// getSupportFragmentManager().beginTransaction()
+		// .add(R.id.container, noteTitleFragment).commit();
+		// }
 		if (requestCode == 1) {
+			Log.d(TAG, "requestCode = 1, calling on click");
 			noteTitleFragment.onClick(data);
+			Log.d(TAG, "back to main from on click");
 			noteTitleFragment.setArguments(getIntent().getExtras());
 
 			getSupportFragmentManager().beginTransaction()

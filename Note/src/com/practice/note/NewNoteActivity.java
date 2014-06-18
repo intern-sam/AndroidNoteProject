@@ -41,10 +41,12 @@ public class NewNoteActivity extends FragmentActivity {
 				}
 				Intent intent = new Intent();
 				Log.d(TAG, "Content not null making new intent");
-				// String titleStr = titleText.getText().toString();
-				// intent.putExtra("title", titleStr);
-				// String contentStr = contentText.getText().toString();
-				// intent.putExtra("content", contentStr);
+				intent.putExtra("done", true);
+				String titleStr = titleText.getText().toString();
+				Log.d(TAG, titleStr);
+				intent.putExtra("title", titleStr);
+				String contentStr = contentText.getText().toString();
+				intent.putExtra("content", contentStr);
 				setResult(RESULT_OK, intent);
 				finish();
 			}
