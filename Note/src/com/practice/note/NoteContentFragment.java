@@ -38,15 +38,15 @@ public class NoteContentFragment extends Fragment {
 	}
 
 	public void updateItemContentView(int position) {
-		String titles[] = { "Title 1", "Title 2" };
-		String contentA[] = { "Test Content Message 1",
-				"Test Content Message 2" };
-		EditText title = (EditText) getActivity().findViewById(R.id.edit_title);
-		title.setText(titles[position]);
+		// String titles[] = { "Title 1", "Title 2" };
+		// String contentA[] = { "Test Content Message 1",
+		// "Test Content Message 2" };
+		// EditText title = (EditText) getActivity().findViewById(R.id.edit_title);
+		// title.setText(titles[position]);
 		EditText content = (EditText) getActivity().findViewById(
 				R.id.edit_content);
-		content.setText(contentA[position]);
-		mCurrentPosition = position;
+		// content.setText(contentA[position]);
+		// mCurrentPosition = position;
 	}
 
 	@Override
@@ -60,4 +60,5 @@ public class NoteContentFragment extends Fragment {
 		editTitle.setText("");
 		editContent.setText("");
 	}
+
 }

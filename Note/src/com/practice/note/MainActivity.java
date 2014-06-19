@@ -18,6 +18,7 @@ public class MainActivity extends FragmentActivity implements
 	public static final String TAG = MainActivity.class.getName();
 	private NoteContentFragment noteContentFragment;
 	private NoteTitleFragment noteTitleFragment = new NoteTitleFragment();
+	public static final int ACTIVITY_CREATE = 0;
 
 	private boolean isPhone;
 
@@ -82,17 +83,6 @@ public class MainActivity extends FragmentActivity implements
 		}
 	}
 
-	// if (VERSION.SDK_INT >= VERSION_CODES.ICE_CREAM_SANDWICH) {
-	// getActionBar();
-	// } else {
-	// getSupportActionBar();
-	// }
-
-	// if (savedInstanceState == null) {
-	// getSupportFragmentManager().beginTransaction()
-	// .add(R.id.container, new PlaceholderFragment()).commit();
-	// }
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -129,7 +119,7 @@ public class MainActivity extends FragmentActivity implements
 		if (item.getTitle().equals("Add New Note")) {
 			if (isPhone) {
 				Log.d(TAG, "is phone, start clicked");
-				startActivityForResult(intent, 1);
+				startActivityForResult(intent, ACTIVITY_CREATE);
 			} else {
 				noteContentFragment.clear();
 			}
@@ -157,36 +147,26 @@ public class MainActivity extends FragmentActivity implements
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		Note note;
 		Log.d(TAG, "Returned to main");
-		// NoteTitleFragment noteTitleFragment = new NoteTitleFragment();
-		// Intent intent = new Intent();
-		// intent = data;
 		Log.d(TAG, "Note title and intent initialized");
+		switch(requestCode) {
+			case ACTIVITY_CREATE:
+				//String title = extras.getString(MySQLiteHelper.COLUMN_TITLE);
+				//String content = extras.getString(MySQLiteHelper.COLUMN_CONTENT);
+				note = noteTitleFragment.updateTitleFragment(data);
+		}
 		isPhone = findViewById(R.id.note_frag) == null;
-		//
-		// if (isPhone) {
-		//
-		// noteTitleFragment.setArguments(getIntent().getExtras());
-		//
-		// getSupportFragmentManager().beginTransaction()
-		// .add(R.id.container, noteTitleFragment).commit();
-		// }
 		if (requestCode == 1 && data != null) {
 			if (resultCode == RESULT_OK) {
 				Log.d(TAG, "requestCode = 1, calling on click");
-				noteTitleFragment.onClick(data);
+				note = noteTitleFragment.updateTitleFragment(data);
 				Log.d(TAG, "back to main from on click");
-				// noteTitleFragment.setArguments(getIntent().getExtras());
-				// setContentView(R.layout.activity_main);
 				Log.d(TAG, "set layout");
+				if (!isPhone) {
 
-				// getSupportFragmentManager().beginTransaction()
-				// .add(R.id.container, noteTitleFragment).commit();
-				// if(resultCode == RESULT_OK){
-				// String title = data.getStringExtra("title");
-				// String content = data.getStringExtra("content");
-				// noteTitleFragment.onClick(intent);
-				// }
+				}
 			}
 		}
 	}

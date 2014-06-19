@@ -4,6 +4,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -16,6 +17,7 @@ public class NoteTitleFragment extends ListFragment {
 	OnListItemSelectedListener mCallback;
 	private NotesDataSource dataSource;
 	public static final String TAG = NoteTitleFragment.class.getName();
+	private static final int ACTIVITY_EDIT = 1;
 
 	public interface OnListItemSelectedListener {
 		public void onListItemSelected(int position);
@@ -61,11 +63,29 @@ public class NoteTitleFragment extends ListFragment {
 
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		mCallback.onListItemSelected(position);
-		getListView().setItemChecked(position, true);
+		super.onListItemClick(l, v, position, id);
+		Cursor cursor = dataSource.allNotes();
+		cursor.moveToPosition(position);
+		if (getActivity().findViewById(R.id.note_frag) == null) {
+			Intent intent = new Intent(getActivity(), NewNoteActivity.class);
+			intent.putExtra(MySQLiteHelper.COLUMN_ID, id);
+			intent.putExtra(
+					MySQLiteHelper.COLUMN_TITLE,
+					cursor.getString(cursor
+							.getColumnIndexOrThrow(MySQLiteHelper.COLUMN_TITLE)));
+			intent.putExtra(
+					MySQLiteHelper.COLUMN_CONTENT,
+					cursor.getString(cursor
+							.getColumnIndexOrThrow(MySQLiteHelper.COLUMN_CONTENT)));
+			startActivityForResult(intent, ACTIVITY_EDIT);
+			mCallback.onListItemSelected(position);
+			getListView().setItemChecked(position, true);
+
+		}
+
 	}
 
-	public void onClick(Intent intent) {
+	public Note updateTitleFragment(Intent intent) {
 		@SuppressWarnings("unchecked")
 		ArrayAdapter<Note> adapter = (ArrayAdapter<Note>) getListAdapter();
 		Note note = null;
@@ -87,6 +107,7 @@ public class NoteTitleFragment extends ListFragment {
 			}
 		}
 		adapter.notifyDataSetChanged();
+		return note;
 	}
 
 	@Override

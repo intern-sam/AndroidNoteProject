@@ -59,6 +59,21 @@ public class NotesDataSource {
 
 	}
 
+	public Cursor getNote(long rowID) throws SQLException {
+		Cursor mCursor = database.query(true, MySQLiteHelper.TABLE_NOTES,
+				new String[] { MySQLiteHelper.COLUMN_ID,
+						MySQLiteHelper.COLUMN_TITLE,
+						MySQLiteHelper.COLUMN_CONTENT },
+				MySQLiteHelper.COLUMN_ID + "=" + rowID, null, null, null, null,
+				null);
+
+		if (mCursor != null) {
+			mCursor.moveToFirst();
+		}
+
+		return mCursor;
+	}
+
 	public List<Note> getAllNotes() {
 		List<Note> notes = new ArrayList<Note>();
 
@@ -74,6 +89,12 @@ public class NotesDataSource {
 
 		cursor.close();
 		return notes;
+	}
+
+	public Cursor allNotes() {
+		return database.query(MySQLiteHelper.TABLE_NOTES, new String[] {
+				MySQLiteHelper.COLUMN_ID, MySQLiteHelper.COLUMN_TITLE,
+				MySQLiteHelper.COLUMN_CONTENT }, null, null, null, null, null);
 	}
 
 	public List<String> getAllTitles() {
@@ -102,5 +123,14 @@ public class NotesDataSource {
 		String title = null;
 		title = cursor.getString(1);
 		return title;
+	}
+
+	public boolean updateNote(long rowID, String title, String content) {
+		ContentValues args = new ContentValues();
+		args.put(MySQLiteHelper.COLUMN_TITLE, title);
+		args.put(MySQLiteHelper.COLUMN_CONTENT, content);
+
+		return database.update(MySQLiteHelper.TABLE_NOTES, args,
+				MySQLiteHelper.COLUMN_ID + "=" + rowID, null) > 0;
 	}
 }

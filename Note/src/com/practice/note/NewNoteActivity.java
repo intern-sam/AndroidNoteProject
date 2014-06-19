@@ -17,6 +17,9 @@ import android.widget.EditText;
 public class NewNoteActivity extends FragmentActivity {
 	private static final String TAG = NewNoteActivity.class.getName();
 	Button doneBtn;
+	private EditText mTitleText;
+	private EditText mContentText;
+	private Long mRowId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -24,29 +27,50 @@ public class NewNoteActivity extends FragmentActivity {
 		Log.d(TAG, "Made it to start");
 		setContentView(R.layout.activity_new_note);
 
+		mTitleText = (EditText) findViewById(R.id.edit_title);
+		mContentText = (EditText) findViewById(R.id.edit_content);
+		mRowId = null;
+
+		Bundle extras = getIntent().getExtras();
+		if (extras != null) {
+			String title = extras.getString(MySQLiteHelper.COLUMN_TITLE);
+			String content = extras.getString(MySQLiteHelper.COLUMN_CONTENT);
+			mRowId = extras.getLong(MySQLiteHelper.COLUMN_ID);
+
+			if (title != null) {
+				mTitleText.setText(title);
+			}
+
+			if (content != null) {
+				mContentText.setText(content);
+			}
+		}
+
 		doneBtn = (Button) findViewById(R.id.done_btn);
 		doneBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View argO) {
+				Bundle bundle = new Bundle();
 				Log.d(TAG, "Made it to click");
 
-				EditText titleText = (EditText) findViewById(R.id.edit_title);
-				EditText contentText = (EditText) findViewById(R.id.edit_content);
-				if (titleText.getText().toString().equals("")) {
+				if (mTitleText.getText().toString().equals("")) {
 					Log.d(TAG, "Title is empty");
 					// make a toast
 				}
-				if (contentText.getText().toString().equals("")) {
+				if (mContentText.getText().toString().equals("")) {
 					// sure you want to save an empty note dialog
 				}
+
+				bundle.putString(MySQLiteHelper.COLUMN_TITLE, mTitleText
+						.getText().toString());
+				bundle.putString(MySQLiteHelper.COLUMN_CONTENT, mContentText
+						.getText().toString());
+
+				if (mRowId != null) {
+					bundle.putLong(MySQLiteHelper.COLUMN_ID, mRowId);
+				}
 				Intent intent = new Intent();
-				Log.d(TAG, "Content not null making new intent");
-				intent.putExtra("done", true);
-				String titleStr = titleText.getText().toString();
-				Log.d(TAG, titleStr);
-				intent.putExtra("title", titleStr);
-				String contentStr = contentText.getText().toString();
-				intent.putExtra("content", contentStr);
+				intent.putExtras(bundle);
 				setResult(RESULT_OK, intent);
 				finish();
 			}
@@ -94,32 +118,4 @@ public class NewNoteActivity extends FragmentActivity {
 			return rootView;
 		}
 	}
-	// public void onClick(View view) {
-	// //@SuppressWarnings("unchecked")
-	// Log.d(TAG, "Made it to click");
-	//
-	// EditText titleText = (EditText) findViewById(R.id.edit_title);
-	// EditText contentText = (EditText) findViewById(R.id.edit_content);
-	// if(titleText.getText().toString().equals("")){
-	// Log.d(TAG, "Title is empty");
-	// //make a toast
-	// }
-	// if (contentText.getText().toString().equals("")){
-	// //sure you want to save an empty note dialog
-	// }
-	// else{
-	// Intent intent = new Intent();
-	// if(view.getId() == R.id.done_btn){
-	// Log.d(TAG, "Content not null making new intent");
-	// //String titleStr = titleText.getText().toString();
-	// //intent.putExtra("title", titleStr);
-	// //String contentStr = contentText.getText().toString();
-	// //intent.putExtra("content", contentStr);
-	// setResult(RESULT_OK, intent);
-	// }
-	// else{
-	// setResult(RESULT_CANCELED, intent);
-	// }
-	// }
-	// }
 }
