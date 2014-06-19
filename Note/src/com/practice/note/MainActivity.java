@@ -17,6 +17,7 @@ public class MainActivity extends FragmentActivity implements
 		NoteTitleFragment.OnListItemSelectedListener {
 	public static final String TAG = MainActivity.class.getName();
 	private NoteContentFragment noteContentFragment;
+	private NoteTitleFragment noteTitleFragment = new NoteTitleFragment();
 
 	private boolean isPhone;
 
@@ -35,7 +36,7 @@ public class MainActivity extends FragmentActivity implements
 			if (savedInstanceState != null) {
 				return;
 			}
-			NoteTitleFragment noteTitleFragment = new NoteTitleFragment();
+			// NoteTitleFragment noteTitleFragment = new NoteTitleFragment();
 
 			noteTitleFragment.setArguments(getIntent().getExtras());
 
@@ -157,8 +158,9 @@ public class MainActivity extends FragmentActivity implements
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		Log.d(TAG, "Returned to main");
-		NoteTitleFragment noteTitleFragment = new NoteTitleFragment();
-		Intent intent = new Intent();
+		// NoteTitleFragment noteTitleFragment = new NoteTitleFragment();
+		// Intent intent = new Intent();
+		// intent = data;
 		Log.d(TAG, "Note title and intent initialized");
 		isPhone = findViewById(R.id.note_frag) == null;
 		//
@@ -169,21 +171,34 @@ public class MainActivity extends FragmentActivity implements
 		// getSupportFragmentManager().beginTransaction()
 		// .add(R.id.container, noteTitleFragment).commit();
 		// }
-		if (requestCode == 1) {
-			Log.d(TAG, "requestCode = 1, calling on click");
-			noteTitleFragment.onClick(data);
-			Log.d(TAG, "back to main from on click");
-			setContentView(R.layout.activity_main);
-			noteTitleFragment.setArguments(getIntent().getExtras());
+		if (requestCode == 1 && data != null) {
+			if (resultCode == RESULT_OK) {
+				Log.d(TAG, "requestCode = 1, calling on click");
+				noteTitleFragment.onClick(data);
+				Log.d(TAG, "back to main from on click");
+				// noteTitleFragment.setArguments(getIntent().getExtras());
+				// setContentView(R.layout.activity_main);
+				Log.d(TAG, "set layout");
 
-			getSupportFragmentManager().beginTransaction()
-					.add(R.id.container, noteTitleFragment).commit();
-			// if(resultCode == RESULT_OK){
-			// String title = data.getStringExtra("title");
-			// String content = data.getStringExtra("content");
-			// noteTitleFragment.onClick(intent);
-			// }
+				// getSupportFragmentManager().beginTransaction()
+				// .add(R.id.container, noteTitleFragment).commit();
+				// if(resultCode == RESULT_OK){
+				// String title = data.getStringExtra("title");
+				// String content = data.getStringExtra("content");
+				// noteTitleFragment.onClick(intent);
+				// }
+			}
 		}
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
 	}
 
 }

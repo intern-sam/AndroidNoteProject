@@ -73,8 +73,10 @@ public class NoteTitleFragment extends ListFragment {
 		// dataSource.open();
 		if (intent.getBooleanExtra("done", true)) {
 			Log.d(TAG, intent.getStringExtra("title"));
-			note = dataSource.createNote(intent.getStringExtra("title"),
-					intent.getStringExtra("content"));
+			String tempTitle = intent.getStringExtra("title");
+			String tempContent = intent.getStringExtra("content");
+			Log.d(TAG, tempContent);
+			note = dataSource.createNote(tempTitle, tempContent);
 			Log.d(TAG, "note set");
 			adapter.add(note);
 			Log.d(TAG, "note added");
@@ -98,7 +100,7 @@ public class NoteTitleFragment extends ListFragment {
 	public void onPause() {
 		Log.d(TAG, "on pause called");
 		super.onPause();
-		dataSource.close();
+		// dataSource.close();
 	}
 
 }
