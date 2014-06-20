@@ -17,6 +17,7 @@ import android.widget.EditText;
 public class NewNoteActivity extends FragmentActivity {
 	private static final String TAG = NewNoteActivity.class.getName();
 	Button doneBtn;
+	Button deleteBtn;
 	private EditText mTitleText;
 	private EditText mContentText;
 	private Long mRowId;
@@ -46,7 +47,9 @@ public class NewNoteActivity extends FragmentActivity {
 			}
 		}
 
+		deleteBtn = (Button) findViewById(R.id.delete_btn);
 		doneBtn = (Button) findViewById(R.id.done_btn);
+
 		doneBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View argO) {
@@ -71,6 +74,28 @@ public class NewNoteActivity extends FragmentActivity {
 				}
 				Intent intent = new Intent();
 				intent.putExtras(bundle);
+				setResult(RESULT_OK, intent);
+				finish();
+			}
+		});
+
+		deleteBtn.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View argO) {
+				Bundle bundle = new Bundle();
+				bundle.putString(MySQLiteHelper.COLUMN_TITLE, mTitleText
+						.getText().toString());
+				bundle.putString(MySQLiteHelper.COLUMN_CONTENT, mContentText
+						.getText().toString());
+				if (mRowId != null) {
+					bundle.putLong(MySQLiteHelper.COLUMN_ID, mRowId);
+				}
+
+				bundle.putBoolean("done", false);
+
+				Intent intent = new Intent();
+				intent.putExtras(bundle);
+				Log.d(TAG, "***Delete pressed");
 				setResult(RESULT_OK, intent);
 				finish();
 			}

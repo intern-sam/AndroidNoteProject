@@ -59,7 +59,8 @@ public class NotesDataSource {
 
 	}
 
-	public Cursor getNote(long rowID) throws SQLException {
+	public Note getNote(long rowID) throws SQLException {
+		Note note;
 		Cursor mCursor = database.query(true, MySQLiteHelper.TABLE_NOTES,
 				new String[] { MySQLiteHelper.COLUMN_ID,
 						MySQLiteHelper.COLUMN_TITLE,
@@ -70,8 +71,8 @@ public class NotesDataSource {
 		if (mCursor != null) {
 			mCursor.moveToFirst();
 		}
-
-		return mCursor;
+		note = cursorToNote(mCursor);
+		return note;
 	}
 
 	public List<Note> getAllNotes() {
