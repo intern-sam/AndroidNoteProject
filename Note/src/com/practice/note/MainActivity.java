@@ -13,8 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 public class MainActivity extends FragmentActivity implements
-		NoteTitleFragment.OnListItemSelectedListener {
+	NoteTitleFragment.OnListItemSelectedListener {
 	public static final String TAG = MainActivity.class.getName();
+
 	private NoteContentFragment noteContentFragment;
 	private NoteTitleFragment noteTitleFragment = new NoteTitleFragment();
 	public static final int ACTIVITY_CREATE = 0;
@@ -42,7 +43,7 @@ public class MainActivity extends FragmentActivity implements
 			noteTitleFragment.setArguments(getIntent().getExtras());
 
 			getSupportFragmentManager().beginTransaction()
-					.add(R.id.container, noteTitleFragment).commit();
+				.add(R.id.container, noteTitleFragment).commit();
 		}
 
 	}
@@ -139,9 +140,9 @@ public class MainActivity extends FragmentActivity implements
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
+			Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_main, container,
-					false);
+				false);
 			return rootView;
 		}
 	}

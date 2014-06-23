@@ -16,6 +16,7 @@ import android.widget.EditText;
 
 public class NewNoteActivity extends FragmentActivity {
 	private static final String TAG = NewNoteActivity.class.getName();
+
 	private Button doneBtn;
 	private Button deleteBtn;
 	private EditText mTitleText;

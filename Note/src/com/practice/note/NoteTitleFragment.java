@@ -3,7 +3,6 @@ package com.practice.note;
 import java.util.List;
 
 import android.app.Activity;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Build;
@@ -15,10 +14,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 public class NoteTitleFragment extends ListFragment {
-	OnListItemSelectedListener mCallback;
-	private NotesDataSource dataSource;
 	public static final String TAG = NoteTitleFragment.class.getName();
+
 	private static final int ACTIVITY_EDIT = 1;
+
+	private OnListItemSelectedListener mCallback;
+	private NotesDataSource dataSource;
 	private Cursor mCursor;
 	private int layout;
 	private List<Note> values;
@@ -31,7 +32,7 @@ public class NoteTitleFragment extends ListFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		layout = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ? android.R.layout.simple_list_item_activated_1
-				: android.R.layout.simple_list_item_1;
+			: android.R.layout.simple_list_item_1;
 		dataSource = new NotesDataSource(getActivity());
 		Log.d(TAG, "On create Called");
 		// if (dataSource != null) {
@@ -39,7 +40,7 @@ public class NoteTitleFragment extends ListFragment {
 		values = dataSource.getAllNotes();
 
 		ArrayAdapter<Note> adapter = new ArrayAdapter<Note>(getActivity(),
-				layout, values);
+			layout, values);
 		// String tempItems[] = { "one", "two" };
 		setListAdapter(adapter);
 		// }
@@ -61,7 +62,7 @@ public class NoteTitleFragment extends ListFragment {
 			mCallback = (OnListItemSelectedListener) activity;
 		} catch (ClassCastException e) {
 			throw new ClassCastException(activity.toString()
-					+ " must implement OnListItemSelectedListener");
+				+ " must implement OnListItemSelectedListener");
 		}
 	}
 
@@ -74,13 +75,13 @@ public class NoteTitleFragment extends ListFragment {
 			Intent intent = new Intent(getActivity(), NewNoteActivity.class);
 			intent.putExtra(MySQLiteHelper.COLUMN_ID, id);
 			intent.putExtra(
-					MySQLiteHelper.COLUMN_TITLE,
-					mCursor.getString(mCursor
-							.getColumnIndexOrThrow(MySQLiteHelper.COLUMN_TITLE)));
+				MySQLiteHelper.COLUMN_TITLE,
+				mCursor.getString(mCursor
+					.getColumnIndexOrThrow(MySQLiteHelper.COLUMN_TITLE)));
 			intent.putExtra(
-					MySQLiteHelper.COLUMN_CONTENT,
-					mCursor.getString(mCursor
-							.getColumnIndexOrThrow(MySQLiteHelper.COLUMN_CONTENT)));
+				MySQLiteHelper.COLUMN_CONTENT,
+				mCursor.getString(mCursor
+					.getColumnIndexOrThrow(MySQLiteHelper.COLUMN_CONTENT)));
 			startActivityForResult(intent, ACTIVITY_EDIT);
 			mCallback.onListItemSelected(position);
 			getListView().setItemChecked(position, true);
@@ -113,7 +114,7 @@ public class NoteTitleFragment extends ListFragment {
 		String content = extras.getString(MySQLiteHelper.COLUMN_CONTENT);
 		long rowId = extras.getLong(MySQLiteHelper.COLUMN_ID);
 		Note note = null;
-		ArrayAdapter<Note> adapter = new ArrayAdapter<Note> (getActivity(), layout, values);
+		ArrayAdapter<Note> adapter = new ArrayAdapter<Note>(getActivity(), layout, values);
 
 		if (extras.getBoolean("done")) {
 			Log.d(TAG, "Done Condition met");
@@ -123,7 +124,7 @@ public class NoteTitleFragment extends ListFragment {
 			if (getListAdapter().getCount() > 0) {
 				Log.d(TAG, "****made it ot update");
 				note = dataSource.getNote(extras
-						.getLong(MySQLiteHelper.COLUMN_ID));
+					.getLong(MySQLiteHelper.COLUMN_ID));
 				dataSource.deleteNote(note);
 				adapter.remove(note);
 			}
