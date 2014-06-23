@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 public class NoteContentFragment extends Fragment {
-	final static String ARG_POSITION = "position";
+	private final static String ARG_POSITION = "position";
 	private int mCurrentPosition = -1;
 	private EditText editTitle;
 	private EditText editContent;
@@ -16,7 +16,7 @@ public class NoteContentFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+		Bundle savedInstanceState) {
 		if (savedInstanceState != null) {
 			mCurrentPosition = savedInstanceState.getInt(ARG_POSITION);
 		}
@@ -44,7 +44,7 @@ public class NoteContentFragment extends Fragment {
 		// EditText title = (EditText) getActivity().findViewById(R.id.edit_title);
 		// title.setText(titles[position]);
 		EditText content = (EditText) getActivity().findViewById(
-				R.id.edit_content);
+			R.id.edit_content);
 		// content.setText(contentA[position]);
 		// mCurrentPosition = position;
 	}

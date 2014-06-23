@@ -1,37 +1,37 @@
 package com.practice.note;
 
 public class Note {
+
 	private long id;
 	private String title;
-	
-private String noteContent;
-	
-	public String getNoteContent(){
+	private String noteContent;
+
+	public String getNoteContent() {
 		return noteContent;
 	}
-	
-	public void setNoteContent(String noteContent){
+
+	public void setNoteContent(String noteContent) {
 		this.noteContent = noteContent;
 	}
-	
-	public long getId(){
+
+	public long getId() {
 		return id;
 	}
-	
-	public void setId(long id){
+
+	public void setId(long id) {
 		this.id = id;
 	}
-	
-	public String getTitle(){
+
+	public String getTitle() {
 		return title;
 	}
-	
-	public void setTitle(String title){
+
+	public void setTitle(String title) {
 		this.title = title;
 	}
-	
+
 	@Override
-	public String toString(){
+	public String toString() {
 		return title;
 	}
 }

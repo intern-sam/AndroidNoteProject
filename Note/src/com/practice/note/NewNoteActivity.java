@@ -16,8 +16,8 @@ import android.widget.EditText;
 
 public class NewNoteActivity extends FragmentActivity {
 	private static final String TAG = NewNoteActivity.class.getName();
-	Button doneBtn;
-	Button deleteBtn;
+	private Button doneBtn;
+	private Button deleteBtn;
 	private EditText mTitleText;
 	private EditText mContentText;
 	private Long mRowId;
@@ -65,9 +65,9 @@ public class NewNoteActivity extends FragmentActivity {
 				}
 
 				bundle.putString(MySQLiteHelper.COLUMN_TITLE, mTitleText
-						.getText().toString());
+					.getText().toString());
 				bundle.putString(MySQLiteHelper.COLUMN_CONTENT, mContentText
-						.getText().toString());
+					.getText().toString());
 
 				if (mRowId != null) {
 					bundle.putLong(MySQLiteHelper.COLUMN_ID, mRowId);
@@ -84,9 +84,9 @@ public class NewNoteActivity extends FragmentActivity {
 			public void onClick(View argO) {
 				Bundle bundle = new Bundle();
 				bundle.putString(MySQLiteHelper.COLUMN_TITLE, mTitleText
-						.getText().toString());
+					.getText().toString());
 				bundle.putString(MySQLiteHelper.COLUMN_CONTENT, mContentText
-						.getText().toString());
+					.getText().toString());
 				if (mRowId != null) {
 					bundle.putLong(MySQLiteHelper.COLUMN_ID, mRowId);
 				}
@@ -137,9 +137,9 @@ public class NewNoteActivity extends FragmentActivity {
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
+			Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_new_note,
-					container, false);
+				container, false);
 			return rootView;
 		}
 	}
