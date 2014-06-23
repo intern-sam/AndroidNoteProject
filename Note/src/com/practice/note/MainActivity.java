@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 public class MainActivity extends FragmentActivity implements
-	NoteTitleFragment.OnListItemSelectedListener {
+		NoteTitleFragment.OnListItemSelectedListener {
 	public static final String TAG = MainActivity.class.getName();
 
 	private NoteContentFragment noteContentFragment;
@@ -43,7 +43,7 @@ public class MainActivity extends FragmentActivity implements
 			noteTitleFragment.setArguments(getIntent().getExtras());
 
 			getSupportFragmentManager().beginTransaction()
-				.add(R.id.container, noteTitleFragment).commit();
+					.add(R.id.container, noteTitleFragment).commit();
 		}
 
 	}
@@ -140,9 +140,9 @@ public class MainActivity extends FragmentActivity implements
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_main, container,
-				false);
+					false);
 			return rootView;
 		}
 	}
@@ -152,14 +152,14 @@ public class MainActivity extends FragmentActivity implements
 		super.onActivityResult(requestCode, resultCode, data);
 		Note note;
 		Log.d(TAG, "Returned to main");
-		Log.d(TAG, "Note title and intent initialized");
+		Log.d(TAG, "Request Code: ");
 		switch (requestCode) {
 		case ACTIVITY_CREATE:
-			// String title = extras.getString(MySQLiteHelper.COLUMN_TITLE);
-			// String content = extras.getString(MySQLiteHelper.COLUMN_CONTENT);
+			Log.d(TAG, "Request Code: ");
 			noteTitleFragment.createNote(data);
 			break;
 		case ACTIVITY_EDIT:
+			Log.d(TAG, "activity edit");
 			noteTitleFragment.updateNote(data);
 			break;
 		}
