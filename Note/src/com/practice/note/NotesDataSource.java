@@ -41,10 +41,10 @@ public class NotesDataSource {
 		values.put(MySQLiteHelper.COLUMN_CONTENT, content);
 		Log.d(TAG, "put content");
 		long insertId = database.insert(MySQLiteHelper.TABLE_NOTES, null,
-			values);
+				values);
 		Cursor cursor = database.query(MySQLiteHelper.TABLE_NOTES, allColumns,
-			MySQLiteHelper.COLUMN_ID + " = " + insertId, null, null, null,
-			null);
+				MySQLiteHelper.COLUMN_ID + " = " + insertId, null, null, null,
+				null);
 		cursor.moveToFirst();
 		Note newNote = cursorToNote(cursor);
 		cursor.close();
@@ -52,21 +52,21 @@ public class NotesDataSource {
 	}
 
 	public void deleteNote(Note note) {
+		Log.d(TAG, "Note delete with id: " + note.getId());
 		long id = note.getId();
-		System.out.println("Note delete with id: " + id);
 		database.delete(MySQLiteHelper.TABLE_NOTES, MySQLiteHelper.COLUMN_ID
-			+ " = " + id, null);
+				+ " = " + id, null);
 
 	}
 
 	public Note getNote(long rowID) throws SQLException {
 		Note note;
 		Cursor mCursor = database.query(true, MySQLiteHelper.TABLE_NOTES,
-			new String[] { MySQLiteHelper.COLUMN_ID,
-					MySQLiteHelper.COLUMN_TITLE,
-					MySQLiteHelper.COLUMN_CONTENT },
-			MySQLiteHelper.COLUMN_ID + "=" + rowID, null, null, null, null,
-			null);
+				new String[] { MySQLiteHelper.COLUMN_ID,
+						MySQLiteHelper.COLUMN_TITLE,
+						MySQLiteHelper.COLUMN_CONTENT },
+				MySQLiteHelper.COLUMN_ID + "=" + rowID, null, null, null, null,
+				null);
 
 		if (mCursor != null) {
 			mCursor.moveToFirst();
@@ -79,7 +79,7 @@ public class NotesDataSource {
 		List<Note> notes = new ArrayList<Note>();
 
 		Cursor cursor = database.query(MySQLiteHelper.TABLE_NOTES, allColumns,
-			null, null, null, null, null);
+				null, null, null, null, null);
 
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {
@@ -101,7 +101,7 @@ public class NotesDataSource {
 	public List<String> getAllTitles() {
 		List<String> titles = new ArrayList<String>();
 		Cursor cursor = database.query(MySQLiteHelper.TABLE_NOTES, allTitles,
-			null, null, null, null, null);
+				null, null, null, null, null);
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {
 			String title = cursorToTitle(cursor);
@@ -132,6 +132,6 @@ public class NotesDataSource {
 		args.put(MySQLiteHelper.COLUMN_CONTENT, content);
 
 		return database.update(MySQLiteHelper.TABLE_NOTES, args,
-			MySQLiteHelper.COLUMN_ID + "=" + rowID, null) > 0;
+				MySQLiteHelper.COLUMN_ID + "=" + rowID, null) > 0;
 	}
 }

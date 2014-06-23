@@ -35,15 +35,12 @@ public class NoteTitleFragment extends ListFragment {
 				: android.R.layout.simple_list_item_1;
 		dataSource = new NotesDataSource(getActivity());
 		Log.d(TAG, "On create Called");
-		// if (dataSource != null) {
 		dataSource.open();
 		values = dataSource.getAllNotes();
 
 		ArrayAdapter<Note> adapter = new ArrayAdapter<Note>(getActivity(),
 				layout, values);
-		// String tempItems[] = { "one", "two" };
 		setListAdapter(adapter);
-		// }
 	}
 
 	@Override
@@ -95,17 +92,12 @@ public class NoteTitleFragment extends ListFragment {
 		ArrayAdapter<Note> adapter = (ArrayAdapter<Note>) getListAdapter();
 		Note note = null;
 		Bundle extras = intent.getExtras();
-		// dataSource.open();
-
-		// String tempTitle = intent.getStringExtra("title");
 		String tempTitle = extras.getString(MySQLiteHelper.COLUMN_TITLE);
-		// String tempContent = intent.getStringExtra("content");
 		String tempContent = extras.getString(MySQLiteHelper.COLUMN_CONTENT);
 		note = dataSource.createNote(tempTitle, tempContent);
 		adapter.add(note);
 
 		adapter.notifyDataSetChanged();
-		// return note;
 	}
 
 	public void updateNote(Intent intent) {
@@ -123,11 +115,15 @@ public class NoteTitleFragment extends ListFragment {
 			dataSource.updateNote(rowId, title, content);
 		} else {
 			if (getListAdapter().getCount() > 0) {
-				Log.d(TAG, "****made it ot update");
+				Log.d(TAG, "ID: " + extras.getLong(MySQLiteHelper.COLUMN_ID));
 				note = dataSource.getNote(extras
 						.getLong(MySQLiteHelper.COLUMN_ID));
+				Log.d(TAG, note.getTitle());
+				Log.d(TAG, "********");
 				dataSource.deleteNote(note);
+				Log.d(TAG, "********");
 				adapter.remove(note);
+				Log.d(TAG, "********");
 			}
 		}
 		setListAdapter(adapter);
