@@ -1,17 +1,11 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/FragmentContainer"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
-
-</FrameLayout>
-<!-- <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    tools:context="com.practice.note.NewNoteActivity"
-    tools:ignore="MergeRootFrame" >
+    <!-- tools:context="com.practice.note.NoteContentFragment"
+    tools:ignore="MergeRootFrame" > -->
     <EditText android:id="@+id/edit_title"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -36,4 +30,4 @@
         android:layout_gravity="center"
         android:textColor="@color/btn_color"
         android:onClick="onClick"/>
-</LinearLayout> -->
+</LinearLayout>

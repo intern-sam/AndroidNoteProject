@@ -48,6 +48,7 @@ public class NotesDataSource {
 		cursor.moveToFirst();
 		Note newNote = cursorToNote(cursor);
 		cursor.close();
+		Log.d(TAG, "Note created");
 		return newNote;
 	}
 
@@ -59,19 +60,39 @@ public class NotesDataSource {
 
 	}
 
+	public void deleteNote(Long mRowId) {
+		Log.d(TAG, "Note delete with id: " + mRowId);
+		Cursor mCursor = database.query(MySQLiteHelper.TABLE_NOTES, allColumns,
+				null, null, null, null, null);
+		if (mRowId < Integer.MIN_VALUE || mRowId > Integer.MAX_VALUE) {
+			// toast an error, can't convert without value change
+			return;
+		}
+		int pos = (int) (long) mRowId;
+		mCursor.moveToPosition(pos);
+		Note note = cursorToNote(mCursor);
+		database.delete(MySQLiteHelper.TABLE_NOTES, MySQLiteHelper.COLUMN_ID
+				+ " = " + note.getId(), null);
+
+	}
+
 	public Note getNote(long rowID) throws SQLException {
 		Note note;
+
 		Cursor mCursor = database.query(true, MySQLiteHelper.TABLE_NOTES,
 				new String[] { MySQLiteHelper.COLUMN_ID,
 						MySQLiteHelper.COLUMN_TITLE,
 						MySQLiteHelper.COLUMN_CONTENT },
 				MySQLiteHelper.COLUMN_ID + "=" + rowID, null, null, null, null,
 				null);
+		Log.d(TAG, "Cursor: " + mCursor);
 
 		if (mCursor != null) {
 			mCursor.moveToFirst();
+			Log.d(TAG, "Cursor moved to first");
 		}
 		note = cursorToNote(mCursor);
+		Log.d(TAG, "Cursor converted");
 		return note;
 	}
 
@@ -114,9 +135,15 @@ public class NotesDataSource {
 
 	private Note cursorToNote(Cursor cursor) {
 		Note note = new Note();
+		Log.d(TAG, "In cursorToNote()");
+		Log.d(TAG, "ID from cursor: " + cursor.getLong(0));
 		note.setId(cursor.getLong(0));
+		// Log.d(TAG, "ID from cursor: " + cursor.getLong(1));
 		note.setTitle(cursor.getString(1));
+		Log.d(TAG, "Title from cursor: " + cursor.getString(1));
 		note.setNoteContent(cursor.getString(2));
+		Log.d(TAG, "Content from cursor: " + cursor.getString(2));
+		Log.d(TAG, "Note stuff set");
 		return note;
 	}
 
@@ -127,11 +154,19 @@ public class NotesDataSource {
 	}
 
 	public boolean updateNote(long rowID, String title, String content) {
+		Cursor mCursor = database.query(MySQLiteHelper.TABLE_NOTES, allColumns,
+				null, null, null, null, null);
+		if (rowID < Integer.MIN_VALUE || rowID > Integer.MAX_VALUE) {
+			// toast an error, can't convert without value change
+			return false;
+		}
+		int pos = (int) rowID;
+		mCursor.moveToPosition(pos);
 		ContentValues args = new ContentValues();
 		args.put(MySQLiteHelper.COLUMN_TITLE, title);
 		args.put(MySQLiteHelper.COLUMN_CONTENT, content);
 
 		return database.update(MySQLiteHelper.TABLE_NOTES, args,
-				MySQLiteHelper.COLUMN_ID + "=" + rowID, null) > 0;
+				MySQLiteHelper.COLUMN_ID + "=" + mCursor.getLong(0), null) > 0;
 	}
 }

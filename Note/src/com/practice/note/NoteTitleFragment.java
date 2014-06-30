@@ -79,7 +79,7 @@ public class NoteTitleFragment extends ListFragment {
 					MySQLiteHelper.COLUMN_CONTENT,
 					mCursor.getString(mCursor
 							.getColumnIndexOrThrow(MySQLiteHelper.COLUMN_CONTENT)));
-			getActivity().startActivityForResult(intent, ACTIVITY_EDIT);
+			getActivity().startActivity(intent);
 			mCallback.onListItemSelected(position);
 			getListView().setItemChecked(position, true);
 
@@ -100,32 +100,34 @@ public class NoteTitleFragment extends ListFragment {
 		adapter.notifyDataSetChanged();
 	}
 
-	public void updateNote(Intent intent) {
-		Bundle extras = intent.getExtras();
-		String title = extras.getString(MySQLiteHelper.COLUMN_TITLE);
-		String content = extras.getString(MySQLiteHelper.COLUMN_CONTENT);
-		long rowId = extras.getLong(MySQLiteHelper.COLUMN_ID);
+	public void updateNote(/* Intent intent */) {
+		// Bundle extras = intent.getExtras();
+		// String title = extras.getString(MySQLiteHelper.COLUMN_TITLE);
+		// String content = extras.getString(MySQLiteHelper.COLUMN_CONTENT);
+		// long rowId = extras.getLong(MySQLiteHelper.COLUMN_ID);
 		Log.d(TAG, "made it to update");
 		Note note = null;
+		values = dataSource.getAllNotes();
 		ArrayAdapter<Note> adapter = new ArrayAdapter<Note>(getActivity(),
 				layout, values);
 
-		if (extras.getBoolean("done")) {
-			Log.d(TAG, "Done Condition met");
-			dataSource.updateNote(rowId, title, content);
-		} else {
-			if (getListAdapter().getCount() > 0) {
-				Log.d(TAG, "ID: " + extras.getLong(MySQLiteHelper.COLUMN_ID));
-				note = dataSource.getNote(extras
-						.getLong(MySQLiteHelper.COLUMN_ID));
-				Log.d(TAG, note.getTitle());
-				Log.d(TAG, "********");
-				dataSource.deleteNote(note);
-				Log.d(TAG, "********");
-				adapter.remove(note);
-				Log.d(TAG, "********");
-			}
-		}
+		// note = ((Note) getListItem)
+		// if (extras.getBoolean("done")) {
+		// Log.d(TAG, "Done Condition met");
+		// dataSource.updateNote(rowId, title, content);
+		// } else {
+		// if (getListAdapter().getCount() > 0) {
+		// Log.d(TAG, "ID: " + extras.getLong(MySQLiteHelper.COLUMN_ID));
+		// note = dataSource.getNote(extras
+		// .getLong(MySQLiteHelper.COLUMN_ID));
+		// Log.d(TAG, note.getTitle());
+		// Log.d(TAG, "********");
+		// dataSource.deleteNote(note);
+		// Log.d(TAG, "********");
+		// adapter.remove(note);
+		// Log.d(TAG, "********");
+		// }
+		// }
 		setListAdapter(adapter);
 
 		adapter.notifyDataSetChanged();
@@ -136,6 +138,7 @@ public class NoteTitleFragment extends ListFragment {
 		Log.d(TAG, "on resume called");
 		super.onResume();
 		dataSource.open();
+		updateNote();
 	}
 
 	@Override

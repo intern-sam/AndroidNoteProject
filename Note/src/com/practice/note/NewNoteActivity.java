@@ -1,111 +1,109 @@
 package com.practice.note;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 
 public class NewNoteActivity extends FragmentActivity {
 	private static final String TAG = NewNoteActivity.class.getName();
 
-	private Button doneBtn;
-	private Button deleteBtn;
-	private EditText mTitleText;
-	private EditText mContentText;
-	private Long mRowId;
+	// private FragmentManager fm = getFragmentManager();
+	private FragmentTransaction ft = getSupportFragmentManager()
+			.beginTransaction();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.d(TAG, "Made it to start");
 		setContentView(R.layout.activity_new_note);
+		Fragment noteContentFragment = new NoteContentFragment();
+		ft.add(R.id.FragmentContainer, noteContentFragment);
+		ft.commit();
 
-		mTitleText = (EditText) findViewById(R.id.edit_title);
-		mContentText = (EditText) findViewById(R.id.edit_content);
-		mRowId = null;
-
-		Bundle extras = getIntent().getExtras();
-		if (extras != null) {
-			String title = extras.getString(MySQLiteHelper.COLUMN_TITLE);
-			String content = extras.getString(MySQLiteHelper.COLUMN_CONTENT);
-			mRowId = extras.getLong(MySQLiteHelper.COLUMN_ID);
-
-			if (title != null) {
-				mTitleText.setText(title);
-			}
-
-			if (content != null) {
-				mContentText.setText(content);
-			}
-		}
-
-		deleteBtn = (Button) findViewById(R.id.delete_btn);
-		doneBtn = (Button) findViewById(R.id.done_btn);
-
-		doneBtn.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View argO) {
-				Bundle bundle = new Bundle();
-				Log.d(TAG, "Made it to click");
-
-				if (mTitleText.getText().toString().equals("")) {
-					Log.d(TAG, "Title is empty");
-					// make a toast
-				}
-				if (mContentText.getText().toString().equals("")) {
-					// sure you want to save an empty note dialog
-				}
-
-				bundle.putString(MySQLiteHelper.COLUMN_TITLE, mTitleText
-					.getText().toString());
-				bundle.putString(MySQLiteHelper.COLUMN_CONTENT, mContentText
-					.getText().toString());
-
-				if (mRowId != null) {
-					bundle.putLong(MySQLiteHelper.COLUMN_ID, mRowId);
-				}
-				Intent intent = new Intent();
-				intent.putExtras(bundle);
-				setResult(RESULT_OK, intent);
-				finish();
-			}
-		});
-
-		deleteBtn.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View argO) {
-				Bundle bundle = new Bundle();
-				bundle.putString(MySQLiteHelper.COLUMN_TITLE, mTitleText
-					.getText().toString());
-				bundle.putString(MySQLiteHelper.COLUMN_CONTENT, mContentText
-					.getText().toString());
-				if (mRowId != null) {
-					bundle.putLong(MySQLiteHelper.COLUMN_ID, mRowId);
-				}
-
-				bundle.putBoolean("done", false);
-
-				Intent intent = new Intent();
-				intent.putExtras(bundle);
-				Log.d(TAG, "***Delete pressed");
-				setResult(RESULT_OK, intent);
-				finish();
-			}
-		});
-
-		// if (savedInstanceState == null) {
-		// getSupportFragmentManager().beginTransaction()
-		// .add(R.id.container, new PlaceholderFragment()).commit();
+		// mTitleText = (EditText) findViewById(R.id.edit_title);
+		// mContentText = (EditText) findViewById(R.id.edit_content);
+		// mRowId = null;
+		//
+		// Bundle extras = getIntent().getExtras();
+		// if (extras != null) {
+		// String title = extras.getString(MySQLiteHelper.COLUMN_TITLE);
+		// String content = extras.getString(MySQLiteHelper.COLUMN_CONTENT);
+		// mRowId = extras.getLong(MySQLiteHelper.COLUMN_ID);
+		//
+		// if (title != null) {
+		// mTitleText.setText(title);
 		// }
+		//
+		// if (content != null) {
+		// mContentText.setText(content);
+		// }
+		// }
+		//
+		// deleteBtn = (Button) findViewById(R.id.delete_btn);
+		// doneBtn = (Button) findViewById(R.id.done_btn);
+		//
+		// doneBtn.setOnClickListener(new OnClickListener() {
+		// @Override
+		// public void onClick(View argO) {
+		// Bundle bundle = new Bundle();
+		// Log.d(TAG, "Made it to click");
+		//
+		// if (mTitleText.getText().toString().equals("")) {
+		// Log.d(TAG, "Title is empty");
+		// // make a toast
+		// }
+		// if (mContentText.getText().toString().equals("")) {
+		// // sure you want to save an empty note dialog
+		// }
+		//
+		// bundle.putString(MySQLiteHelper.COLUMN_TITLE, mTitleText
+		// .getText().toString());
+		// bundle.putString(MySQLiteHelper.COLUMN_CONTENT, mContentText
+		// .getText().toString());
+		//
+		// if (mRowId != null) {
+		// bundle.putLong(MySQLiteHelper.COLUMN_ID, mRowId);
+		// }
+		// Intent intent = new Intent();
+		// intent.putExtras(bundle);
+		// setResult(RESULT_OK, intent);
+		// finish();
+		// }
+		// });
+		//
+		// deleteBtn.setOnClickListener(new OnClickListener() {
+		// @Override
+		// public void onClick(View argO) {
+		// Bundle bundle = new Bundle();
+		// bundle.putString(MySQLiteHelper.COLUMN_TITLE, mTitleText
+		// .getText().toString());
+		// bundle.putString(MySQLiteHelper.COLUMN_CONTENT, mContentText
+		// .getText().toString());
+		// if (mRowId != null) {
+		// bundle.putLong(MySQLiteHelper.COLUMN_ID, mRowId);
+		// }
+		//
+		// bundle.putBoolean("done", false);
+		//
+		// Intent intent = new Intent();
+		// intent.putExtras(bundle);
+		// Log.d(TAG, "***Delete pressed");
+		// setResult(RESULT_OK, intent);
+		// finish();
+		// }
+		// });
+		//
+		// // if (savedInstanceState == null) {
+		// // getSupportFragmentManager().beginTransaction()
+		// // .add(R.id.container, new PlaceholderFragment()).commit();
+		// // }
 	}
 
 	@Override
@@ -138,9 +136,9 @@ public class NewNoteActivity extends FragmentActivity {
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_new_note,
-				container, false);
+					container, false);
 			return rootView;
 		}
 	}

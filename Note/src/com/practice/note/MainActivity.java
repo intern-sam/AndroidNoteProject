@@ -29,6 +29,7 @@ public class MainActivity extends FragmentActivity implements
 		super.onCreate(savedInstanceState);
 		// getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
 		setContentView(R.layout.activity_main);
+		Log.d(TAG, "onCreate Called");
 
 		final ActionBar actionBar = getActionBar();
 		actionBar.setTitle("My Notes");
@@ -121,7 +122,7 @@ public class MainActivity extends FragmentActivity implements
 		if (item.getTitle().equals("Add New Note")) {
 			if (isPhone) {
 				Log.d(TAG, "is phone, start clicked");
-				startActivityForResult(intent, ACTIVITY_CREATE);
+				startActivity(intent);
 			} else {
 				noteContentFragment.clear();
 			}
@@ -160,7 +161,7 @@ public class MainActivity extends FragmentActivity implements
 			break;
 		case ACTIVITY_EDIT:
 			Log.d(TAG, "activity edit");
-			noteTitleFragment.updateNote(data);
+			// noteTitleFragment.updateNote(data);
 			break;
 		}
 		// isPhone = findViewById(R.id.note_frag) == null;
@@ -179,6 +180,7 @@ public class MainActivity extends FragmentActivity implements
 
 	@Override
 	public void onResume() {
+		Log.d(TAG, "Main Activity onResume()");
 		super.onResume();
 	}
 
