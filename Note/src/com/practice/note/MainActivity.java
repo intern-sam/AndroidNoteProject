@@ -164,18 +164,7 @@ public class MainActivity extends FragmentActivity implements
 			// noteTitleFragment.updateNote(data);
 			break;
 		}
-		// isPhone = findViewById(R.id.note_frag) == null;
-		// if (requestCode == 1 && data != null) {
-		// if (resultCode == RESULT_OK) {
-		// Log.d(TAG, "requestCode = 1, calling on click");
-		// note = noteTitleFragment.updateTitleFragment(data);
-		// Log.d(TAG, "back to main from on click");
-		// Log.d(TAG, "set layout");
-		// if (!isPhone) {
-		//
-		// }
-		// }
-		// }
+
 	}
 
 	@Override
