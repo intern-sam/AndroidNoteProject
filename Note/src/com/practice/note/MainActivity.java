@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -124,7 +125,15 @@ public class MainActivity extends FragmentActivity implements
 				Log.d(TAG, "is phone, start clicked");
 				startActivity(intent);
 			} else {
-				noteContentFragment.clear();
+				// noteContentFragment.clear();
+				Fragment newFragment = new NoteContentFragment();
+				FragmentTransaction ft = getSupportFragmentManager()
+						.beginTransaction();
+				ft.replace(R.id.FragmentContainer, newFragment);
+				Log.d(TAG, "Replace containter");
+				// ft.addToBackStack(null);
+				ft.commit();
+				Log.d(TAG, "commit");
 			}
 
 		}

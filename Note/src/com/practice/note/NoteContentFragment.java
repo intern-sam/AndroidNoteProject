@@ -24,12 +24,15 @@ public class NoteContentFragment extends Fragment {
 	private Note note = null;
 	private static final String TAG = NoteContentFragment.class.getName();
 	private boolean isEdit;
+	private boolean isPhone;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		isPhone = getActivity().findViewById(R.id.note_frag) == null;
 		dataSource = new NotesDataSource(getActivity());
 		dataSource.open();
+		Log.d(TAG, "onCreateView called. tablet");
 		if (savedInstanceState != null) {
 			mCurrentPosition = savedInstanceState.getInt(ARG_POSITION);
 		}
@@ -39,11 +42,11 @@ public class NoteContentFragment extends Fragment {
 		mContentText = (EditText) view.findViewById(R.id.edit_content);
 
 		mRowId = null;
-		if (mTitleText == null && mContentText == null) {
-			isEdit = false;
-		} else {
-			isEdit = true;
-		}
+		// if (mTitleText == null && mContentText == null) {
+		// isEdit = false;
+		// } else {
+		// isEdit = true;
+		// }
 
 		final Bundle extras = getActivity().getIntent().getExtras();
 		Log.d(TAG, "Got extras");
@@ -90,10 +93,14 @@ public class NoteContentFragment extends Fragment {
 
 				if (mRowId != null) {
 					bundle.putLong(MySQLiteHelper.COLUMN_ID, mRowId);
+					isEdit = true;
+				} else {
+					isEdit = false;
 				}
-				Intent intent = new Intent();
+				// Intent intent = new Intent();
 				// intent.putExtras(bundle);
 				// getActivity().finish();
+				Log.d(TAG, "wtf is happening");
 				if (!isEdit) {
 					dataSource.createNote(mTitleText.getText().toString(),
 							mContentText.getText().toString());
@@ -102,7 +109,12 @@ public class NoteContentFragment extends Fragment {
 					dataSource.updateNote(mRowId, mTitleText.getText()
 							.toString(), mContentText.getText().toString());
 				}
-				getActivity().finish();
+				if (!isPhone) {
+					Log.d(TAG, "Should not eget here on tablet");
+					getActivity().finish();
+				} else {
+					// refresh list
+				}
 			}
 		});
 
