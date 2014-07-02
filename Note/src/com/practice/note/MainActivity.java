@@ -141,13 +141,14 @@ public class MainActivity extends FragmentActivity implements
 				// Log.d(TAG, "preclear");
 				// noteContentFragment = null;
 				// Log.d(TAG, "Doesnt like clear");
+				noteContentFragment = null;
 				// noteContentFragment = new NoteContentFragment();
-				// FragmentTransaction ft = getSupportFragmentManager()
-				// .beginTransaction();
-				// ft.replace(R.id.note_content_frag, noteContentFragment);
+				FragmentTransaction ft = getSupportFragmentManager()
+						.beginTransaction();
+				ft.replace(R.id.note_content_frag, noteContentFragment);
 				// Log.d(TAG, "Replace containter");
 				// ft.addToBackStack(null);
-				// ft.commit();
+				ft.commit();
 				// Log.d(TAG, "commit");
 			}
 

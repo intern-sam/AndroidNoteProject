@@ -90,7 +90,7 @@ public class NoteContentFragment extends Fragment {
 				bundle.putString(MySQLiteHelper.COLUMN_CONTENT, mContentText
 						.getText().toString());
 
-				if (mRowId != null) {
+				if (mTitleText.getText().toString() != null) {
 					bundle.putLong(MySQLiteHelper.COLUMN_ID, mRowId);
 					isEdit = true;
 				} else {
