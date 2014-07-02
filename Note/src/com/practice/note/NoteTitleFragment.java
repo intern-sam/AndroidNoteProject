@@ -23,16 +23,18 @@ public class NoteTitleFragment extends ListFragment {
 	private Cursor mCursor;
 	private int layout;
 	private List<Note> values;
+	private boolean isPhone;
 
 	public interface OnListItemSelectedListener {
 		public void onListItemSelected(int position);
 	}
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		layout = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB ? android.R.layout.simple_list_item_activated_1
 				: android.R.layout.simple_list_item_1;
+		isPhone = getActivity().findViewById(R.id.note_frag) == null;
 		dataSource = new NotesDataSource(getActivity());
 		Log.d(TAG, "On create Called");
 		dataSource.open();
@@ -41,6 +43,12 @@ public class NoteTitleFragment extends ListFragment {
 		ArrayAdapter<Note> adapter = new ArrayAdapter<Note>(getActivity(),
 				layout, values);
 		setListAdapter(adapter);
+		if (!adapter.isEmpty() && !isPhone) {
+			NoteContentFragment noteContentFragment = (NoteContentFragment) getFragmentManager()
+					.findFragmentById(R.id.note_content_frag);
+			noteContentFragment.updateItemContentView(0);
+		}
+
 	}
 
 	@Override
@@ -48,6 +56,7 @@ public class NoteTitleFragment extends ListFragment {
 		Log.d(TAG, "On start called");
 		super.onStart();
 		if (getFragmentManager().findFragmentById(R.id.note_content_frag) != null) {
+			Log.d(TAG, "note_content_frag not null");
 			getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		}
 	}
@@ -66,8 +75,10 @@ public class NoteTitleFragment extends ListFragment {
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
+
 		mCursor = dataSource.allNotes();
 		mCursor.moveToPosition(position);
+
 		if (getActivity().findViewById(R.id.note_frag) == null) {
 			Intent intent = new Intent(getActivity(), NewNoteActivity.class);
 			intent.putExtra(MySQLiteHelper.COLUMN_ID, id);
@@ -82,7 +93,8 @@ public class NoteTitleFragment extends ListFragment {
 			getActivity().startActivity(intent);
 			mCallback.onListItemSelected(position);
 			getListView().setItemChecked(position, true);
-
+		} else {
+			mCallback.onListItemSelected(position);
 		}
 
 	}

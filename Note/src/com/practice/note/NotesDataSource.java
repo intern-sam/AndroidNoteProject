@@ -96,6 +96,15 @@ public class NotesDataSource {
 		return note;
 	}
 
+	public Note getNote(int pos) {
+		Note note;
+		Cursor mCursor = database.query(MySQLiteHelper.TABLE_NOTES, allColumns,
+				null, null, null, null, null);
+		mCursor.moveToPosition(pos);
+		note = cursorToNote(mCursor);
+		return note;
+	}
+
 	public List<Note> getAllNotes() {
 		List<Note> notes = new ArrayList<Note>();
 

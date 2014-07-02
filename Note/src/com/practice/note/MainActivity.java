@@ -53,8 +53,21 @@ public class MainActivity extends FragmentActivity implements
 	@Override
 	public void onListItemSelected(int position) {
 		// super.onListItemSelected(position);
-		// noteContentFragment = (NoteContentFragment) getSupportFragmentManager()
-		// .findFragmentById(R.id.note_content_frag);
+		if (!isPhone) {
+			noteContentFragment = (NoteContentFragment) getSupportFragmentManager()
+					.findFragmentById(R.id.note_content_frag);
+			if (noteContentFragment != null) {
+				noteContentFragment.updateItemContentView(position);
+			} else {
+				Fragment newFragment = new NoteContentFragment();
+				FragmentTransaction ft = getSupportFragmentManager()
+						.beginTransaction();
+				ft.replace(R.id.note_content_frag, newFragment);
+				Log.d(TAG, "Replace containter");
+				ft.addToBackStack(null);
+				ft.commit();
+			}
+		}
 		// if (isPhone) {
 		// NoteContentFragment newContentFragment = new NoteContentFragment();
 		// Bundle args = new Bundle();
@@ -125,15 +138,17 @@ public class MainActivity extends FragmentActivity implements
 				Log.d(TAG, "is phone, start clicked");
 				startActivity(intent);
 			} else {
-				// noteContentFragment.clear();
-				Fragment newFragment = new NoteContentFragment();
-				FragmentTransaction ft = getSupportFragmentManager()
-						.beginTransaction();
-				ft.replace(R.id.FragmentContainer, newFragment);
-				Log.d(TAG, "Replace containter");
+				// Log.d(TAG, "preclear");
+				// noteContentFragment = null;
+				// Log.d(TAG, "Doesnt like clear");
+				// noteContentFragment = new NoteContentFragment();
+				// FragmentTransaction ft = getSupportFragmentManager()
+				// .beginTransaction();
+				// ft.replace(R.id.note_content_frag, noteContentFragment);
+				// Log.d(TAG, "Replace containter");
 				// ft.addToBackStack(null);
-				ft.commit();
-				Log.d(TAG, "commit");
+				// ft.commit();
+				// Log.d(TAG, "commit");
 			}
 
 		}
