@@ -27,10 +27,9 @@ public class NoteContentFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-		Bundle savedInstanceState) {
+			Bundle savedInstanceState) {
 		// here you are not checking the activty view, just using the activity context to check your
 		// current view.
-		// isPhone = getActivity().findViewById(R.id.note_frag) == null;
 		if (this.getActivity() instanceof NewNoteActivity) {
 			isPhone = true;
 		}
@@ -41,14 +40,11 @@ public class NoteContentFragment extends Fragment {
 			mCurrentPosition = savedInstanceState.getInt(ARG_POSITION);
 		}
 		view = inflater.inflate(R.layout.fragment_note_content, container,
-			false);
+				false);
 		mTitleText = (EditText) view.findViewById(R.id.edit_title);
 		mContentText = (EditText) view.findViewById(R.id.edit_content);
 
 		mRowId = null;
-		// if (dataSource != null) {
-		// updateItemContentView(0);
-		// }
 
 		final Bundle extras = getActivity().getIntent().getExtras();
 		Log.d(TAG, "Got extras");
@@ -72,6 +68,9 @@ public class NoteContentFragment extends Fragment {
 			if (mRowId != null && mRowId > 0) {
 				isEdit = true;
 			}
+			if (isPhone) {
+				note = dataSource.getNote(mRowId);
+			}
 		}
 		Log.d(TAG, "made it through ifs");
 
@@ -92,32 +91,27 @@ public class NoteContentFragment extends Fragment {
 				}
 
 				bundle.putString(MySQLiteHelper.COLUMN_TITLE, mTitleText
-					.getText().toString());
+						.getText().toString());
 				bundle.putString(MySQLiteHelper.COLUMN_CONTENT, mContentText
-					.getText().toString());
+						.getText().toString());
 
 				// CHANGES BY ANNA: check for the existance of mRowId if you want to check for
 				// new/edit
 				if (isEdit) {
-					bundle.putLong(MySQLiteHelper.COLUMN_ID, mRowId);
 					dataSource.updateNote(mRowId, mTitleText.getText()
-						.toString(), mContentText.getText().toString());
+							.toString(), mContentText.getText().toString());
 
 				} else {
 					dataSource.createNote(mTitleText.getText().toString(),
-						mContentText.getText().toString());
-					Log.d(TAG, "Lets return to the main activity");
+							mContentText.getText().toString());
 				}
 
 				if (isPhone) {
-					Log.d(TAG, "WHY");
 					getActivity().finish();
 				} else {
 					NoteTitleFragment noteTitleFragment = (NoteTitleFragment) getFragmentManager()
-						.findFragmentById(R.id.note_title_frag);
-					Log.d(TAG, "here");
+							.findFragmentById(R.id.note_title_frag);
 					noteTitleFragment.updateNote();
-					Log.d(TAG, "here");
 				}
 			}
 		});
@@ -127,15 +121,17 @@ public class NoteContentFragment extends Fragment {
 			@Override
 			public void onClick(View argO) {
 				dataSource.deleteNote(note);
+				Log.d(TAG, "Does note get deleted");
 
 				if (isPhone) {
-					Log.d(TAG, "here");
 					getActivity().finish();
 				} else {
 					NoteTitleFragment noteTitleFragment = (NoteTitleFragment) getFragmentManager()
-						.findFragmentById(R.id.note_title_frag);
+							.findFragmentById(R.id.note_title_frag);
 					noteTitleFragment.updateNote();
+					clear();
 				}
+
 			}
 		});
 		if (isEdit) {
@@ -144,10 +140,6 @@ public class NoteContentFragment extends Fragment {
 			// Dont even display the delete button if in new mode
 			deleteBtn.setVisibility(View.GONE);
 		}
-		// if (savedInstanceState == null) {
-		// getSupportFragmentManager().beginTransaction()
-		// .add(R.id.container, new PlaceholderFragment()).commit();
-		// }
 
 		return view;
 	}
@@ -173,9 +165,6 @@ public class NoteContentFragment extends Fragment {
 	}
 
 	public void updateItemContentView(int position) {
-		// String titles[] = { "Title 1", "Title 2" };
-		// String contentA[] = { "Test Content Message 1",
-		// "Test Content Message 2" };
 		note = dataSource.getNote(position);
 		mRowId = note.getId();
 
@@ -185,9 +174,9 @@ public class NoteContentFragment extends Fragment {
 			deleteBtn.setVisibility(View.VISIBLE);
 			isEdit = true;
 		} else {
+			Log.d(TAG, "Clear called");
 			clear();
 		}
-		// mCurrentPosition = position;
 	}
 
 	@Override

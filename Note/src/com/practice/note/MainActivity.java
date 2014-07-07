@@ -14,7 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 public class MainActivity extends FragmentActivity implements
-	NoteTitleFragment.OnListItemSelectedListener {
+		NoteTitleFragment.OnListItemSelectedListener {
 	public static final String TAG = MainActivity.class.getName();
 
 	private NoteContentFragment noteContentFragment;
@@ -28,7 +28,6 @@ public class MainActivity extends FragmentActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
 		setContentView(R.layout.activity_main);
 		Log.d(TAG, "onCreate Called");
 
@@ -36,82 +35,45 @@ public class MainActivity extends FragmentActivity implements
 		actionBar.setTitle("My Notes");
 		isPhone = findViewById(R.id.note_frag) == null;
 		if (isPhone) {
-			// isPhone = false;
 			if (savedInstanceState != null) {
 				return;
 			}
-			// NoteTitleFragment noteTitleFragment = new NoteTitleFragment();
 
 			noteTitleFragment.setArguments(getIntent().getExtras());
 
 			getSupportFragmentManager().beginTransaction()
-				.add(R.id.container, noteTitleFragment).commit();
+					.add(R.id.container, noteTitleFragment).commit();
 		}
 
 	}
 
 	@Override
 	public void onListItemSelected(int position) {
-		// super.onListItemSelected(position);
 		if (!isPhone) {
 			noteContentFragment = (NoteContentFragment) getSupportFragmentManager()
-				.findFragmentById(R.id.note_content_frag);
+					.findFragmentById(R.id.note_content_frag);
 			if (noteContentFragment != null) {
 				noteContentFragment.updateItemContentView(position);
 			} else {
 				createNewNoteFragment();
 			}
+		} else {
+			Log.d(TAG, "List Item Selected");
+			// Intent intent = new Intent(this, NewNoteActivity.class);
+			// startActivity(intent);
 		}
-		// if (isPhone) {
-		// NoteContentFragment newContentFragment = new NoteContentFragment();
-		// Bundle args = new Bundle();
-		// args.putInt(NoteContentFragment.ARG_POSITION, position);
-		// newContentFragment.setArguments(args);
-		// FragmentTransaction transaction = getSupportFragmentManager()
-		// .beginTransaction();
-
-		// transaction.replace(R.id.container, newContentFragment);
-		// transaction.addToBackStack(null);
-		// transaction.commit();
-		// return;
-		// }
-		// // particular note selected
-		// if (noteContentFragment != null) {
-		// noteContentFragment.updateItemContentView(position);
-		// } else {
-		// // noteContentFragment = new NoteContentFragment();
-		// // NoteContentFragment newContentFragment = new NoteContentFragment();
-		// Bundle args = new Bundle();
-		// args.putInt(NoteContentFragment.ARG_POSITION, position);
-		// noteContentFragment.setArguments(args);
-		// FragmentTransaction transaction = getSupportFragmentManager()
-		// .beginTransaction();
-
-		// transaction.replace(R.id.container, noteContentFragment);
-		// transaction.addToBackStack(null);
-		// transaction.commit();
-
-		// }
 	}
 
 	private void createNewNoteFragment() {
-		FragmentTransaction ft = getSupportFragmentManager()
-			.beginTransaction();
+		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		noteContentFragment = new NoteContentFragment();
 		ft.replace(R.id.note_content_frag, noteContentFragment);
-		Log.d(TAG, "Replace containter");
 		ft.addToBackStack(null);
 		ft.commit();
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-
-		// Inflate the menu; this adds items to the action bar if it is present.
-		// getMenuInflater().inflate(R.menu.main, menu);
-		// return true;
-		// MenuInflater inflater = getMenuInflater();
-		// inflater.inflate(R.menu.main, menu);
 
 		menu.add("Add New Note");
 
@@ -139,7 +101,6 @@ public class MainActivity extends FragmentActivity implements
 		Intent intent = new Intent(this, NewNoteActivity.class);
 		if (item.getTitle().equals("Add New Note")) {
 			if (isPhone) {
-				Log.d(TAG, "is phone, start clicked");
 				startActivity(intent);
 			} else {
 				if (noteContentFragment == null) {
@@ -163,31 +124,29 @@ public class MainActivity extends FragmentActivity implements
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_main, container,
-				false);
+					false);
 			return rootView;
 		}
 	}
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		Note note;
-		Log.d(TAG, "Returned to main");
-		Log.d(TAG, "Request Code: ");
-		switch (requestCode) {
-		case ACTIVITY_CREATE:
-			Log.d(TAG, "Request Code: ");
-			noteTitleFragment.createNote(data);
-			break;
-		case ACTIVITY_EDIT:
-			Log.d(TAG, "activity edit");
-			// noteTitleFragment.updateNote(data);
-			break;
-		}
-
-	}
+	// @Override
+	// protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	// super.onActivityResult(requestCode, resultCode, data);
+	// Note note;
+	// switch (requestCode) {
+	// case ACTIVITY_CREATE:
+	// Log.d(TAG, "Request Code: ");
+	// noteTitleFragment.createNote(data);
+	// break;
+	// case ACTIVITY_EDIT:
+	// Log.d(TAG, "activity edit");
+	// // noteTitleFragment.updateNote(data);
+	// break;
+	// }
+	//
+	// }
 
 	@Override
 	public void onResume() {

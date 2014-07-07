@@ -147,12 +147,9 @@ public class NotesDataSource {
 		Log.d(TAG, "In cursorToNote()");
 		Log.d(TAG, "ID from cursor: " + cursor.getLong(0));
 		note.setId(cursor.getLong(0));
-		// Log.d(TAG, "ID from cursor: " + cursor.getLong(1));
 		note.setTitle(cursor.getString(1));
 		Log.d(TAG, "Title from cursor: " + cursor.getString(1));
 		note.setNoteContent(cursor.getString(2));
-		Log.d(TAG, "Content from cursor: " + cursor.getString(2));
-		Log.d(TAG, "Note stuff set");
 		return note;
 	}
 
@@ -175,7 +172,8 @@ public class NotesDataSource {
 		args.put(MySQLiteHelper.COLUMN_TITLE, title);
 		args.put(MySQLiteHelper.COLUMN_CONTENT, content);
 
+		// mCursor.getLong(0)
 		return database.update(MySQLiteHelper.TABLE_NOTES, args,
-				MySQLiteHelper.COLUMN_ID + "=" + mCursor.getLong(0), null) > 0;
+				MySQLiteHelper.COLUMN_ID + "=" + rowID, null) > 0;
 	}
 }
