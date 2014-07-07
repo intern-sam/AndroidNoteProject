@@ -1,6 +1,5 @@
 package com.practice.note;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -28,7 +27,7 @@ public class NoteContentFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+		Bundle savedInstanceState) {
 		isPhone = getActivity().findViewById(R.id.note_frag) == null;
 		dataSource = new NotesDataSource(getActivity());
 		dataSource.open();
@@ -37,7 +36,7 @@ public class NoteContentFragment extends Fragment {
 			mCurrentPosition = savedInstanceState.getInt(ARG_POSITION);
 		}
 		view = inflater.inflate(R.layout.fragment_note_content, container,
-				false);
+			false);
 		mTitleText = (EditText) view.findViewById(R.id.edit_title);
 		mContentText = (EditText) view.findViewById(R.id.edit_content);
 
@@ -64,17 +63,20 @@ public class NoteContentFragment extends Fragment {
 				mContentText.setText(content);
 				Log.d(TAG, "Content set");
 			}
+
+			if (mRowId != null && mRowId > 0) {
+				isEdit = true;
+			}
 		}
 		Log.d(TAG, "made it through ifs");
 
-		deleteBtn = (Button) view.findViewById(R.id.delete_btn);
 		doneBtn = (Button) view.findViewById(R.id.done_btn);
 
 		doneBtn.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View argO) {
 				Bundle bundle = new Bundle();
-				isPhone = getActivity().findViewById(R.id.note_frag) == null;
+				// isPhone = getActivity().findViewById(R.id.note_frag) == null;
 				Log.d(TAG, "Made it to click");
 
 				if (mTitleText.getText().toString().equals("")) {
@@ -86,30 +88,29 @@ public class NoteContentFragment extends Fragment {
 				}
 
 				bundle.putString(MySQLiteHelper.COLUMN_TITLE, mTitleText
-						.getText().toString());
+					.getText().toString());
 				bundle.putString(MySQLiteHelper.COLUMN_CONTENT, mContentText
-						.getText().toString());
+					.getText().toString());
 
-				if (mTitleText.getText().toString() != null) {
+				// CHANGES BY ANNA: check for the existance of mRowId if you want to check for
+				// new/edit
+				if (isEdit) {
 					bundle.putLong(MySQLiteHelper.COLUMN_ID, mRowId);
-					isEdit = true;
-				} else {
-					isEdit = false;
-				}
-				if (!isEdit) {
-					dataSource.createNote(mTitleText.getText().toString(),
-							mContentText.getText().toString());
-					Log.d(TAG, "Lets return to the main activity");
-				} else {
 					dataSource.updateNote(mRowId, mTitleText.getText()
-							.toString(), mContentText.getText().toString());
+						.toString(), mContentText.getText().toString());
+
+				} else {
+					dataSource.createNote(mTitleText.getText().toString(),
+						mContentText.getText().toString());
+					Log.d(TAG, "Lets return to the main activity");
 				}
+
 				if (isPhone) {
 					Log.d(TAG, "WHY");
 					getActivity().finish();
 				} else {
 					NoteTitleFragment noteTitleFragment = (NoteTitleFragment) getFragmentManager()
-							.findFragmentById(R.id.note_title_frag);
+						.findFragmentById(R.id.note_title_frag);
 					Log.d(TAG, "here");
 					noteTitleFragment.updateNote();
 					Log.d(TAG, "here");
@@ -117,54 +118,60 @@ public class NoteContentFragment extends Fragment {
 			}
 		});
 
-		deleteBtn.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View argO) {
-				Bundle bundle = new Bundle();
-				isPhone = getActivity().findViewById(R.id.note_frag) == null;
-				bundle.putString(MySQLiteHelper.COLUMN_TITLE, mTitleText
-						.getText().toString());
-				bundle.putString(MySQLiteHelper.COLUMN_CONTENT, mContentText
-						.getText().toString());
-				if (mRowId != null) {
-					bundle.putLong(MySQLiteHelper.COLUMN_ID, mRowId);
-				}
+		deleteBtn = (Button) view.findViewById(R.id.delete_btn);
+		if (isEdit) {
+			deleteBtn.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View argO) {
+					if (isEdit) {
+						Bundle bundle = new Bundle();
+						// TODO: You should not have to do this in multiple places. Java OO
+						// principal
+						// keep it DRY (do not repeeat yourself)
+						// do it once at the top where you first get the view and keep it around
 
-				bundle.putBoolean("done", false);
-				if (mRowId != null) {
-					bundle.putLong(MySQLiteHelper.COLUMN_ID, mRowId);
-					isEdit = true;
-				} else {
-					isEdit = false;
-				}
+						// isPhone = getActivity().findViewById(R.id.note_frag) == null;
+						bundle.putString(MySQLiteHelper.COLUMN_TITLE, mTitleText
+							.getText().toString());
+						bundle.putString(MySQLiteHelper.COLUMN_CONTENT, mContentText
+							.getText().toString());
+						if (mRowId != null) {
+							bundle.putLong(MySQLiteHelper.COLUMN_ID, mRowId);
+						}
 
-				Intent intent = new Intent();
-				intent.putExtras(bundle);
-				Log.d(TAG, "***Delete pressed");
-				// Log.d(TAG, "ID: " + extras.getLong(MySQLiteHelper.COLUMN_ID));
-				// note = dataSource.getNote(mRowId);
-				// Log.d(TAG, note.getTitle());
-				Log.d(TAG, "********");
+						bundle.putBoolean("done", false);
 
-				Log.d(TAG, "********");
-				// adapter.remove(note);
-				Log.d(TAG, "********");
-				if (!isEdit) {
-					// note hasn't been created, reset fragment
-				} else {
-					dataSource.deleteNote(mRowId);
-				}
-				if (isPhone) {
-					Log.d(TAG, "here");
-					getActivity().finish();
-				} else {
-					NoteTitleFragment noteTitleFragment = (NoteTitleFragment) getFragmentManager()
+						bundle.putLong(MySQLiteHelper.COLUMN_ID, mRowId);
+						dataSource.deleteNote(mRowId);
+					}
+
+					// Intent intent = new Intent();
+					// intent.putExtras(bundle);
+
+					Log.d(TAG, "***Delete pressed");
+					// Log.d(TAG, "ID: " + extras.getLong(MySQLiteHelper.COLUMN_ID));
+					// note = dataSource.getNote(mRowId);
+					// Log.d(TAG, note.getTitle());
+					Log.d(TAG, "********");
+
+					Log.d(TAG, "********");
+					// adapter.remove(note);
+					Log.d(TAG, "********");
+					if (isPhone) {
+						Log.d(TAG, "here");
+						getActivity().finish();
+					} else {
+						NoteTitleFragment noteTitleFragment = (NoteTitleFragment) getFragmentManager()
 							.findFragmentById(R.id.note_title_frag);
-					noteTitleFragment.updateNote();
+						noteTitleFragment.updateNote();
+					}
 				}
-			}
-		});
-
+			});
+			deleteBtn.setVisibility(View.VISIBLE);
+		} else {
+			// Dont even display the delete button if in new mode
+			deleteBtn.setVisibility(View.GONE);
+		}
 		// if (savedInstanceState == null) {
 		// getSupportFragmentManager().beginTransaction()
 		// .add(R.id.container, new PlaceholderFragment()).commit();
@@ -193,10 +200,20 @@ public class NoteContentFragment extends Fragment {
 		title.setText(note.getTitle());
 		// title.setText(titles[position]);
 		EditText content = (EditText) getActivity().findViewById(
-				R.id.edit_content);
+			R.id.edit_content);
 		content.setText(note.getNoteContent());
+
+		// why is the rowId here the position and not the db record
 		mRowId = Long.parseLong(String.valueOf(position));
-		isPhone = getActivity().findViewById(R.id.note_frag) == null;
+		if (mRowId != null && mRowId > 0) {
+			deleteBtn.setVisibility(View.VISIBLE);
+			isEdit = true;
+		} else {
+			deleteBtn.setVisibility(View.GONE);
+			isEdit = false;
+		}
+
+		// isPhone = getActivity().findViewById(R.id.note_frag) == null;
 		// mCurrentPosition = position;
 	}
 

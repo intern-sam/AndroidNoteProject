@@ -14,7 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 public class MainActivity extends FragmentActivity implements
-		NoteTitleFragment.OnListItemSelectedListener {
+	NoteTitleFragment.OnListItemSelectedListener {
 	public static final String TAG = MainActivity.class.getName();
 
 	private NoteContentFragment noteContentFragment;
@@ -45,7 +45,7 @@ public class MainActivity extends FragmentActivity implements
 			noteTitleFragment.setArguments(getIntent().getExtras());
 
 			getSupportFragmentManager().beginTransaction()
-					.add(R.id.container, noteTitleFragment).commit();
+				.add(R.id.container, noteTitleFragment).commit();
 		}
 
 	}
@@ -55,17 +55,11 @@ public class MainActivity extends FragmentActivity implements
 		// super.onListItemSelected(position);
 		if (!isPhone) {
 			noteContentFragment = (NoteContentFragment) getSupportFragmentManager()
-					.findFragmentById(R.id.note_content_frag);
+				.findFragmentById(R.id.note_content_frag);
 			if (noteContentFragment != null) {
 				noteContentFragment.updateItemContentView(position);
 			} else {
-				Fragment newFragment = new NoteContentFragment();
-				FragmentTransaction ft = getSupportFragmentManager()
-						.beginTransaction();
-				ft.replace(R.id.note_content_frag, newFragment);
-				Log.d(TAG, "Replace containter");
-				ft.addToBackStack(null);
-				ft.commit();
+				createNewNoteFragment();
 			}
 		}
 		// if (isPhone) {
@@ -98,6 +92,15 @@ public class MainActivity extends FragmentActivity implements
 		// transaction.commit();
 
 		// }
+	}
+
+	private void createNewNoteFragment() {
+		FragmentTransaction ft = getSupportFragmentManager()
+			.beginTransaction();
+		ft.replace(R.id.note_content_frag, new NoteContentFragment());
+		Log.d(TAG, "Replace containter");
+		ft.addToBackStack(null);
+		ft.commit();
 	}
 
 	@Override
@@ -138,18 +141,7 @@ public class MainActivity extends FragmentActivity implements
 				Log.d(TAG, "is phone, start clicked");
 				startActivity(intent);
 			} else {
-				// Log.d(TAG, "preclear");
-				// noteContentFragment = null;
-				// Log.d(TAG, "Doesnt like clear");
-				noteContentFragment = null;
-				// noteContentFragment = new NoteContentFragment();
-				FragmentTransaction ft = getSupportFragmentManager()
-						.beginTransaction();
-				ft.replace(R.id.note_content_frag, noteContentFragment);
-				// Log.d(TAG, "Replace containter");
-				// ft.addToBackStack(null);
-				ft.commit();
-				// Log.d(TAG, "commit");
+				createNewNoteFragment();
 			}
 
 		}
@@ -166,9 +158,9 @@ public class MainActivity extends FragmentActivity implements
 
 		@Override
 		public View onCreateView(LayoutInflater inflater, ViewGroup container,
-				Bundle savedInstanceState) {
+			Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_main, container,
-					false);
+				false);
 			return rootView;
 		}
 	}
