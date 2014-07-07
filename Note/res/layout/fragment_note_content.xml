@@ -21,13 +21,11 @@
         android:layout_height="wrap_content"
         android:text="@string/done_btn"
         android:layout_gravity="center"
-        android:textColor="@color/btn_color"
-        android:onClick="onClick"/>
+        android:textColor="@color/btn_color"/>
     <Button android:id="@+id/delete_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/delete_btn"
         android:layout_gravity="center"
-        android:textColor="@color/btn_color"
-        android:onClick="onClick"/>
+        android:textColor="@color/btn_color"/>
 </LinearLayout>

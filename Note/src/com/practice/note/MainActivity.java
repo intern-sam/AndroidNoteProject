@@ -97,7 +97,8 @@ public class MainActivity extends FragmentActivity implements
 	private void createNewNoteFragment() {
 		FragmentTransaction ft = getSupportFragmentManager()
 			.beginTransaction();
-		ft.replace(R.id.note_content_frag, new NoteContentFragment());
+		noteContentFragment = new NoteContentFragment();
+		ft.replace(R.id.note_content_frag, noteContentFragment);
 		Log.d(TAG, "Replace containter");
 		ft.addToBackStack(null);
 		ft.commit();
@@ -141,7 +142,11 @@ public class MainActivity extends FragmentActivity implements
 				Log.d(TAG, "is phone, start clicked");
 				startActivity(intent);
 			} else {
-				createNewNoteFragment();
+				if (noteContentFragment == null) {
+					createNewNoteFragment();
+				} else {
+					noteContentFragment.clear();
+				}
 			}
 
 		}
