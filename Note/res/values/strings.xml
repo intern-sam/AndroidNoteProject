@@ -10,5 +10,13 @@
     <string name="edit_content">Note</string>
     <string name="done_btn">Done</string>
     <string name="delete_btn">Delete</string>
+    <string name="empty_title_dialog">Title Cannot Be Left Blank. Please Enter a Title.</string>
+    <string name="empty_content_dialog">Are You Sure You Want To Leave The Body Empty?</string>
+    <string name="dialog_ok">Ok</string>
+    <string name="empty_title">Empty Title</string>
+    <string name="dialog_cancel">Cancel</string>
+    <string name="empty_content">Body is Empty</string>
+    <string name="yes">yes</string>
+    <string name="no">no</string>
 
 </resources>

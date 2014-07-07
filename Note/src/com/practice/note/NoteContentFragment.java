@@ -1,5 +1,7 @@
 package com.practice.note;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -84,10 +86,64 @@ public class NoteContentFragment extends Fragment {
 
 				if (mTitleText.getText().toString().equals("")) {
 					Log.d(TAG, "Title is empty");
+					AlertDialog.Builder builder = new AlertDialog.Builder(
+							getActivity());
+					builder.setMessage(R.string.empty_title_dialog).setTitle(
+							R.string.empty_title);
+					builder.setPositiveButton(R.string.dialog_ok,
+							new DialogInterface.OnClickListener() {
+
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									return;
+
+								}
+							});
+					builder.setNegativeButton(R.string.dialog_cancel,
+							new DialogInterface.OnClickListener() {
+
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									if (isPhone) {
+										getActivity().finish();
+									} else {
+										return;
+									}
+								}
+							});
+					AlertDialog dialog = builder.create();
+					dialog.show();
+					return;
 					// make a toast
 				}
 				if (mContentText.getText().toString().equals("")) {
-					// sure you want to save an empty note dialog
+					AlertDialog.Builder builder = new AlertDialog.Builder(
+							getActivity());
+					builder.setMessage(R.string.empty_content_dialog).setTitle(
+							R.string.empty_content);
+					builder.setPositiveButton(R.string.yes,
+							new DialogInterface.OnClickListener() {
+
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									doneButtonUpdates();
+
+								}
+							})
+							.setNegativeButton(R.string.no,
+									new DialogInterface.OnClickListener() {
+
+										@Override
+										public void onClick(
+												DialogInterface dialog,
+												int which) {
+											return;
+										}
+									}).show();
+					return;
 				}
 
 				bundle.putString(MySQLiteHelper.COLUMN_TITLE, mTitleText
@@ -97,22 +153,8 @@ public class NoteContentFragment extends Fragment {
 
 				// CHANGES BY ANNA: check for the existance of mRowId if you want to check for
 				// new/edit
-				if (isEdit) {
-					dataSource.updateNote(mRowId, mTitleText.getText()
-							.toString(), mContentText.getText().toString());
 
-				} else {
-					dataSource.createNote(mTitleText.getText().toString(),
-							mContentText.getText().toString());
-				}
-
-				if (isPhone) {
-					getActivity().finish();
-				} else {
-					NoteTitleFragment noteTitleFragment = (NoteTitleFragment) getFragmentManager()
-							.findFragmentById(R.id.note_title_frag);
-					noteTitleFragment.updateNote();
-				}
+				doneButtonUpdates();
 			}
 		});
 
@@ -142,6 +184,26 @@ public class NoteContentFragment extends Fragment {
 		}
 
 		return view;
+	}
+
+	private void doneButtonUpdates() {
+		if (isEdit) {
+			dataSource.updateNote(mRowId, mTitleText.getText().toString(),
+					mContentText.getText().toString());
+
+		} else {
+			dataSource.createNote(mTitleText.getText().toString(), mContentText
+					.getText().toString());
+		}
+
+		if (isPhone) {
+			getActivity().finish();
+		} else {
+			NoteTitleFragment noteTitleFragment = (NoteTitleFragment) getFragmentManager()
+					.findFragmentById(R.id.note_title_frag);
+			noteTitleFragment.updateNote();
+		}
+
 	}
 
 	@Override
