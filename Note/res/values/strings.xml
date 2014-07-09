@@ -18,5 +18,6 @@
     <string name="empty_content">Body is Empty</string>
     <string name="yes">yes</string>
     <string name="no">no</string>
+    <string name="edit">Edit</string>
 
 </resources>
