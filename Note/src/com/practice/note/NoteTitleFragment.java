@@ -164,7 +164,7 @@ public class NoteTitleFragment extends ListFragment {
 	public void createNote(Intent intent) {
 		@SuppressWarnings("unchecked")
 		ArrayAdapter<Note> adapter = (ArrayAdapter<Note>) getListAdapter();
-		Note note = null;
+		note = null;
 		Bundle extras = intent.getExtras();
 		String tempTitle = extras.getString(MySQLiteHelper.COLUMN_TITLE);
 		String tempContent = extras.getString(MySQLiteHelper.COLUMN_CONTENT);
